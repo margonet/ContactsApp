@@ -7,13 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ContactsApp;
 
-namespace ContactsAppUI
+namespace ContactsAppUI.Properties
 {
-    public partial class Form1 : Form
+    public partial class About : Form
     {
-        public Form1()
+        public About()
         {
             InitializeComponent();
         }
