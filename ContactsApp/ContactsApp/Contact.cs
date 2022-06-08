@@ -35,7 +35,7 @@ namespace ContactsApp
         /// <summary>
         /// Номер телефона контакта
         /// </summary>
-        public PhoneNumber PhoneNumber { get; set; }
+        public PhoneNumber PhoneNumber { get; set; } = new PhoneNumber();
 
         /// <summary>
         /// Свойства фамилии контакта вместе с проверкой на длину
@@ -47,8 +47,8 @@ namespace ContactsApp
 
             set
             {
-                CheckLength(Surname, 50);
-                Surname = Surname.ToUpper()[0] + Surname.Substring(1);
+                CheckLength(value, 50);
+                _surname = ChangeRegisterOfFirstSymbol(value);
             }
         }
 
@@ -62,8 +62,8 @@ namespace ContactsApp
 
             set
             {
-                CheckLength(Name, 50);
-                Name = Name.ToUpper()[0] + Name.Substring(1);
+                CheckLength(value, 50);
+                _name = ChangeRegisterOfFirstSymbol(value);
             }
         }
 
@@ -73,7 +73,11 @@ namespace ContactsApp
         public string Email
         {
             get { return _email; }
-            set { CheckLength(Email, 50); }
+            set
+            {
+                CheckLength(value, 50);
+                _email = value;
+            }
         }
 
         /// <summary>
@@ -87,7 +91,8 @@ namespace ContactsApp
             }
             set
             {
-                CheckLength(VKID, 15);
+                CheckLength(value, 15);
+                _vkID = value;
             }
         }
 
@@ -101,15 +106,17 @@ namespace ContactsApp
 
             set
             {
-                if (Birthday.Year < 1900)
+                if (value.Year < 1900)
                 {
                     throw new ArgumentException("Год рождения не может быть меньше 1900 года!");
                 }
                 //TODO: Исправить на null
-                if (Birthday > DateTime.Today)
-                {
-                    throw new ArgumentException("День рождения не может быть больше сегодняшней даты!");
-                }
+                //if (Birthday > DateTime.Today)
+                //{
+                //    throw new ArgumentException("День рождения не может быть больше сегодняшней даты!");
+                //}
+
+                _birthday = value;
             }
         }
 
@@ -126,6 +133,22 @@ namespace ContactsApp
             }
         }
 
+        private string ChangeRegisterOfFirstSymbol(string value)
+        {
+            if (value != "")
+            {
+                string newValue = value.ToUpper()[0] + value.Substring(1);
+                return newValue;
+            }
+
+            return value;
+        }
+
+        public Contact()
+        {
+
+        }
+
         /// <summary>
         /// Конструктор контакта
         /// </summary>
@@ -138,7 +161,7 @@ namespace ContactsApp
         public Contact(PhoneNumber phoneNumber, string surname, string name, string email, string vkId, DateTime birthday)
         {
             PhoneNumber = phoneNumber;
-            Surname = name;
+            Surname = surname;
             Name = name;
             Email = email;
             VKID = vkId;

@@ -18,10 +18,15 @@ namespace ContactsApp
         /// <summary>
         /// Путь до папки "AppData" пользователя
         /// </summary>
-        public static readonly string _myPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+        public static readonly string MyPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                                                 "/msukhushina/ContactsApp";
 
-        public static DirectoryInfo directoryInfo = new DirectoryInfo(_myPath);
+        /// <summary>
+        ///хранит имя файла
+        /// </summary>
+        public static readonly string FileName = "/ContactsApp.notes";
+
+        public static DirectoryInfo directoryInfo = new DirectoryInfo(MyPath);
 
         /// <summary>
         /// Сохранение данных контактов в JSON-файл
@@ -35,7 +40,7 @@ namespace ContactsApp
                 directoryInfo.Create();
             }
 
-            using (StreamWriter sw = new StreamWriter(_myPath + @fileName))
+            using (StreamWriter sw = new StreamWriter(MyPath + FileName))
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
                 _serializer.Serialize(writer, project);
@@ -64,7 +69,7 @@ namespace ContactsApp
             Project project = null;
             try
             {
-                using (StreamReader sr = new StreamReader(_myPath + @fileName))
+                using (StreamReader sr = new StreamReader(MyPath + @fileName))
                 using (JsonReader reader = new JsonTextReader(sr))
                 {
                     project = (Project)_serializer.Deserialize<Project>(reader);
